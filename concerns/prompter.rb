@@ -13,12 +13,20 @@ module Prompter
     @@pastel
   end
 
+  def self.announce(text)
+    @@prompt.say(@@pastel.green(text))
+  end
+
   def self.print_header(text, optional = '')
     @@prompt.say(@@pastel.green("=== #{text.upcase}"))
   end
 
   def self.print_newline
     @@prompt.say("\n")
+  end
+
+  def self.print_error(text)
+    @@prompt.say(@@pastel.red(text))
   end
 
   def self.optional(text, suffix = '')
