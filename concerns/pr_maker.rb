@@ -25,7 +25,7 @@ module PrMaker
   def self.check_hub_installed
     prompt = ::Prompter.prompt
 
-    if TTY::Command.new(printer: :null).run('hub --version').failure?
+    if TTY::Command.new(printer: :null).run!('brew list hub').failure?
       prompt.say('This tool requires hub but it was not found.')
       prompt.say('Installing hub from Homebrew...')
 
