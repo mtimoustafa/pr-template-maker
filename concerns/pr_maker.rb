@@ -19,7 +19,7 @@ module PrMaker
     opts.merge!(::Form.prompt_blockers)
     opts.merge!(::Form.prompt_future_plans)
 
-    self.submit_pr
+    self.submit_pr(opts)
   end
 
   def self.check_hub_installed
@@ -46,14 +46,14 @@ module PrMaker
     ::Prompter.print_newline
   end
 
-  def self.submit_pr
+  def self.submit_pr(opts)
     ::Prompter.announce('Submitting PR...')
 
-    erb = ERB.new(File.read('./templates/template.md.erb'))
+    erb = ERB.new(File.read('./templates/template.md.erb'), nil, '-')
     command = TTY::Command.new(printer: :null)
 
-    command.run!('hub pull-request -m', erb.result(binding)) do |out, error|
-      ::Prompter.print_error(error) unless error.empty?
+    command.run!('hub pull-request -om', erb.result(binding)) do |out, error|
+      ::Prompter.print_error(error) unless error.nil?
     end
   end
 end

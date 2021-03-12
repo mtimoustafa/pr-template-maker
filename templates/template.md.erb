@@ -1,48 +1,48 @@
 <%= opts[:title] %>
 
-<% unless opts[:gif].nil? %>
+<% unless opts[:gif].nil? -%>
 ![<%= opts[:gif_caption] %>](<%= opts[:gif] %>)
-<% end %>
+<% end -%>
 
 ## Description
 <%= opts[:description].join %>
 
-<% unless opts[:jira_id].nil? %>
+<% unless opts[:jira_id].nil? -%>
 Fixes [<%= opts[:jira_id] %>](https://vidyard.atlassian.net/browse/<%= opts[:jira_id] %>)
-<% end %>
+<% end -%>
 
 ## Risks
-<%= opts[:risks].join %>
+<%= opts[:risks].join -%>
 
 ## How Has This Been Tested?
-<% ::Form.all_testing_methods.each do |key, value| %>
-  - [<%= opts[:testing_choices].include?(value) ? 'x' : ' ' %>] <%= key %>
-<% end %>
+<% ::Form.all_testing_methods.each do |key, value| -%>
+- [<%= opts[:testing_choices].include?(value) ? 'x' : ' ' %>] <%= key %>
+<% end -%>
 
 <%= opts[:testing_description].join %>
 
 <%= opts[:other_considerations].join %>
 
-<% if opts[:has_visual_changes] %>
+<% if opts[:has_visual_changes] -%>
 ## Screenshots or Video
 - Before
 - After
-<% end %>
+<% end -%>
 
-<% deploy_actions = opts[:deploy_actions].join %>
-<% unless deploy_actions.empty? %>
+<% deploy_actions = opts[:deploy_actions].join -%>
+<% unless deploy_actions.empty? -%>
 ## Deploy Actions Required
 <%= deploy_actions %>
-<% end %>
+<% end -%>
 
-<% blockers = opts[:blockers].join %>
-<% unless blockers.empty? %>
+<% blockers = opts[:blockers].join -%>
+<% unless blockers.empty? -%>
 ## Blockers
 <%= blockers %>
-<% end %>
+<% end -%>
 
-<% future_plans = opts[:future_plans].join %>
-<% unless future_plans.empty? %>
+<% future_plans = opts[:future_plans].join -%>
+<% unless future_plans.empty? -%>
 ## Future Plans
 <%= future_plans %>
-<% end %>
+<% end -%>
