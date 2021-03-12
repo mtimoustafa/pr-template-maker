@@ -15,7 +15,7 @@ Fixes [<%= opts[:jira_id] %>](https://vidyard.atlassian.net/browse/<%= opts[:jir
 <%= opts[:risks].join %>
 
 ## How Has This Been Tested?
-<% all_testing_choices.each do |key, value| %>
+<% ::Prompts.all_testing_methods.each do |key, value| %>
   - [<%= opts[:testing_choices].include?(value) ? 'x' : ' ' %>] <%= key %>
 <% end %>
 
