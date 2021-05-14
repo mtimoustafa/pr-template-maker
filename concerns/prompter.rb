@@ -29,7 +29,7 @@ module Prompter
     @@prompt.say(@@pastel.red(text))
   end
 
-  def self.optional(text, suffix = '')
+  def self.optional(text)
     text += " " unless text.empty?
     return "#{text}#{@@pastel.dim('(Enter to leave blank)')}"
   end

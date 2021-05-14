@@ -1,25 +1,19 @@
-require 'erb'
 require 'tty-command'
-require_relative 'form'
 require_relative 'prompter'
+require_relative '../templates/form'
 
 module PrMaker
+  @@form = nil
+
   def self.make_pr
     self.check_hub_installed
     self.print_introduction
 
-    opts = {}
-    opts.merge!(::Form.prompt_title)
-    opts.merge!(::Form.prompt_gif)
-    opts.merge!(::Form.prompt_description)
-    opts.merge!(::Form.prompt_risks)
-    opts.merge!(::Form.prompt_testing)
-    opts.merge!(::Form.prompt_screenshots_or_video)
-    opts.merge!(::Form.prompt_deploy_actions)
-    opts.merge!(::Form.prompt_blockers)
-    opts.merge!(::Form.prompt_future_plans)
+    template_name = ARGV[0]
+    @@form = ::Form.get_form(template_name)
 
-    self.submit_pr(opts)
+    opts = @@form.run_form
+    self.submit_pr(opts) if ::Prompter.prompt.yes?('PR details completed. Submit PR?')
   end
 
   def self.check_hub_installed
@@ -41,18 +35,24 @@ module PrMaker
     ::Prompter.print_newline
     ::Prompter.announce('===== PR MAKER =====')
     ::Prompter.prompt.say('This will make a PR on your current branch against master/main.')
-    ::Prompter.prompt.say('Please make sure that you are on the correct branch')
-    ::Prompter.prompt.say('and that all your changes are pushed to remote.')
+    ::Prompter.prompt.say('Please make sure that you are in the correct directory, on the')
+    ::Prompter.prompt.say('correct branch, and that all your changes are pushed to remote.')
     ::Prompter.print_newline
   end
 
   def self.submit_pr(opts)
     ::Prompter.announce('Submitting PR...')
 
-    erb = ERB.new(File.read('./templates/template.md.erb'), nil, '-')
+    erb = @@form.template_erb
+    return ::Prompter.announce(erb.result(binding))
     command = TTY::Command.new(printer: :null)
+    base_branch = ARGV[1]
 
-    command.run!('hub pull-request -om', erb.result(binding)) do |out, error|
+    args = ['hub pull-request -l vy-pr']
+    args.push('-b', base_branch) unless base_branch.nil?
+    args.push('-om', erb.result(binding))
+
+    command.run!(*args) do |out, error|
       ::Prompter.print_error(error) unless error.nil?
     end
   end

@@ -1,0 +1,18 @@
+<%# TODO: take opts processing out into form.rb %>
+<%= opts[:title] %>
+
+<% unless opts[:gif].nil? -%>
+![](<%= opts[:gif] %>)
+<% end -%>
+
+## Description
+<%= opts[:description].join %>
+
+## Testing
+<% ::ExampleForm.testing_methods.each do |key, value| -%>
+- [<%= opts[:testing_choices].include?(value) ? 'x' : ' ' %>] <%= key %>
+<% end -%>
+
+<% if opts[:has_visual_changes] -%>
+**This impacts the UI so please review that too!**
+<% end -%>
