@@ -1,3 +1,4 @@
+require_relative 'default/form'
 require_relative 'example/form'
 
 module Form

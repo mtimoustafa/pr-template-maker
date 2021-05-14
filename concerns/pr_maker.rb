@@ -44,7 +44,6 @@ module PrMaker
     ::Prompter.announce('Submitting PR...')
 
     erb = @@form.template_erb
-    return ::Prompter.announce(erb.result(binding))
     command = TTY::Command.new(printer: :null)
     base_branch = ARGV[1]
 
