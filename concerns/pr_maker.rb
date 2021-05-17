@@ -47,7 +47,7 @@ module PrMaker
     command = TTY::Command.new(printer: :null)
     base_branch = ARGV[1]
 
-    args = ['hub pull-request -l vy-pr']
+    args = ['hub pull-request']
     args.push('-b', base_branch) unless base_branch.nil?
     args.push('-om', erb.result(binding))
 
