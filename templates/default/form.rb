@@ -2,13 +2,17 @@ require 'erb'
 require_relative '../../concerns/prompter'
 
 module DefaultForm
+  @@opts = {}
+
   def self.run_form
     return self.prompt_form
   end
 
   def self.template_erb
+    opts = @@opts
     template_path = File.join(File.dirname(__FILE__), './template.md.erb')
-    ERB.new(File.read(template_path), trim_mode: '-')
+    erb = ERB.new(File.read(template_path), trim_mode: '-')
+    return erb.result(binding)
   end
 
   def self.prompt_form
@@ -22,6 +26,7 @@ module DefaultForm
     opts[:description] = ::Prompter.prompt.multiline(::Prompter.optional(''))
 
     ::Prompter.print_newline
+    @@opts = opts
     return opts
   end
 end
